@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import jdk.internal.org.jline.utils.Log;
+
 @RestController
 public class WelcomeRestController {
 
@@ -17,6 +19,7 @@ public class WelcomeRestController {
 
 	@GetMapping
 	public String welcomeMsg() {
+	    logger.info("i am testing docker ..........................");
 		logger.info("***** welcomeMsg() execution start *****");
 		String msg = "Welcome to Ashok IT - Software Training Institute (HYD) ..!!";
 		logger.info("***** welcomeMsg() execution end *****");
