@@ -9,5 +9,10 @@ pipeline {
                 bat 'mvnw.cmd clean package'
             }
         }
+        stage("Docker Check"){
+			step{
+				bat 'docker --version'
+			}
+		}
     }
 }
