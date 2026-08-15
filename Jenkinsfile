@@ -10,7 +10,7 @@ pipeline {
             }
         }
         stage("Docker Check"){
-			step{
+			steps{
 				bat 'docker --version'
 			}
 		}
