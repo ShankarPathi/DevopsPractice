@@ -20,21 +20,27 @@ pipeline {
         }
 
         stage('Docker Push') {
-            steps {
-                withCredentials([usernamePassword(
-                    credentialsId: 'dockerhub-credentials',
-                    usernameVariable: 'DOCKER_USERNAME',
-                    passwordVariable: 'DOCKER_PASSWORD'
-                )]) {
+    steps {
+        withCredentials([
+            usernamePassword(
+                credentialsId: 'dockerhub-credentials',
+                usernameVariable: 'DOCKER_USERNAME',
+                passwordVariable: 'DOCKER_PASSWORD'
+            )
+        ]) {
+            bat '''
+                echo Docker username: %DOCKER_USERNAME%
 
-                    bat 'echo %DOCKER_PASSWORD% | "C:\\Users\\Hp\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" login -u %DOCKER_USERNAME% --password-stdin'
-
-                    bat '"C:\\Users\\Hp\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" tag springboot-1:latest tirumalashankar/springboot-1:1.0'
-
-                    bat '"C:\\Users\\Hp\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" push tirumalashankar/springboot-1:1.0'
-                }
-            }
+                if "%DOCKER_PASSWORD%"=="" (
+                    echo PASSWORD IS EMPTY
+                    exit /b 1
+                ) else (
+                    echo PASSWORD IS PRESENT
+                )
+            '''
         }
+    }
+}
 
         stage('Docker Run') {
             steps {
