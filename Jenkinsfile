@@ -19,7 +19,7 @@ pipeline {
             }
         }
 
-        stage('Docker Push') {
+      stage('Docker Push') {
     steps {
         withCredentials([
             usernamePassword(
@@ -29,16 +29,15 @@ pipeline {
             )
         ]) {
             bat '''
-                echo %DOCKER_PASSWORD% | docker login -u %DOCKER_USERNAME% --password-stdin
+                echo %DOCKER_PASSWORD% | "C:\\Users\\Hp\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" login -u %DOCKER_USERNAME% --password-stdin
 
-                docker tag springboot-1:latest %DOCKER_USERNAME%/springboot-1:latest
+                "C:\\Users\\Hp\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" tag springboot-1:latest %DOCKER_USERNAME%/springboot-1:latest
 
-                docker push %DOCKER_USERNAME%/springboot-1:latest
+                "C:\\Users\\Hp\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" push %DOCKER_USERNAME%/springboot-1:latest
             '''
         }
     }
 }
-
         stage('Docker Run') {
             steps {
 
