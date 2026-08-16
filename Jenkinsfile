@@ -29,14 +29,11 @@ pipeline {
             )
         ]) {
             bat '''
-                echo Docker username: %DOCKER_USERNAME%
+                echo %DOCKER_PASSWORD% | docker login -u %DOCKER_USERNAME% --password-stdin
 
-                if "%DOCKER_PASSWORD%"=="" (
-                    echo PASSWORD IS EMPTY
-                    exit /b 1
-                ) else (
-                    echo PASSWORD IS PRESENT
-                )
+                docker tag springboot-1:latest %DOCKER_USERNAME%/springboot-1:latest
+
+                docker push %DOCKER_USERNAME%/springboot-1:latest
             '''
         }
     }
