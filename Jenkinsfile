@@ -22,14 +22,13 @@ pipeline {
       stage('Docker Push') {
     steps {
         withCredentials([
-            usernamePassword(
-                credentialsId: 'dockerhub-test',
-                usernameVariable: 'DOCKER_USERNAME',
-                passwordVariable: 'DOCKER_PASSWORD'
+            string(
+                credentialsId: 'dockerhub-pat',
+                variable: 'DOCKER_PASSWORD'
             )
         ]) {
             bat '''
-                echo %DOCKER_PASSWORD% | "C:\\Users\\Hp\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" login -u %DOCKER_USERNAME% --password-stdin
+                echo %DOCKER_PASSWORD% | "C:\\Users\\Hp\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" login -u tirumalashankar --password-stdin
             '''
         }
     }
