@@ -1,3 +1,4 @@
+```groovy
 pipeline {
     agent any
 
@@ -19,25 +20,24 @@ pipeline {
             }
         }
 
-      stage('Docker Push') {
-    steps {
-        withCredentials([
-            usernamePassword(
-                credentialsId: 'dockerhub-credentials',
-                usernameVariable: 'DOCKER_USERNAME',
-                passwordVariable: 'DOCKER_PASSWORD'
-            )
-        ]) {
-            bat '''
-                echo %DOCKER_PASSWORD% | "C:\\Users\\Hp\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" login -u %DOCKER_USERNAME% --password-stdin
+        stage('Docker Push') {
+            steps {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'dockerhub-credentials',
+                        usernameVariable: 'DOCKER_USERNAME',
+                        passwordVariable: 'DOCKER_PASSWORD'
+                    )
+                ]) {
+                    bat '''
+                        echo Jenkins username is: %DOCKER_USERNAME%
 
-                "C:\\Users\\Hp\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" tag springboot-1:latest %DOCKER_USERNAME%/springboot-1:latest
-
-                "C:\\Users\\Hp\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" push %DOCKER_USERNAME%/springboot-1:latest
-            '''
+                        echo %DOCKER_PASSWORD% | "C:\\Users\\Hp\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" login -u %DOCKER_USERNAME% --password-stdin
+                    '''
+                }
+            }
         }
-    }
-}
+
         stage('Docker Run') {
             steps {
 
@@ -50,3 +50,4 @@ pipeline {
         }
     }
 }
+```
