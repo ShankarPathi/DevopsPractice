@@ -29,8 +29,7 @@ pipeline {
             )
         ]) {
             bat '''
-                powershell -Command "Write-Host 'Username length:' $env:DOCKER_USERNAME.Length"
-                powershell -Command "Write-Host 'Password length:' $env:DOCKER_PASSWORD.Length"
+                echo %DOCKER_PASSWORD% | "C:\\Users\\Hp\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" login -u %DOCKER_USERNAME% --password-stdin
             '''
         }
     }
