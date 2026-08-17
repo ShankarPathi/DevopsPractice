@@ -22,18 +22,18 @@ pipeline {
         stage('Docker Push') {
             steps {
                 withCredentials([
-                    usernamePassword(
-                        credentialsId: 'dockerhub-credentials',
-                        usernameVariable: 'DOCKER_USERNAME',
-                        passwordVariable: 'DOCKER_PASSWORD'
-                    )
-                ]) {
-                    bat '''
-                        echo Jenkins username is: %DOCKER_USERNAME%
+    usernamePassword(
+        credentialsId: 'dockerhub-test',
+        usernameVariable: 'DOCKER_USERNAME',
+        passwordVariable: 'DOCKER_PASSWORD'
+    )
+]) {
+    bat '''
+        echo Jenkins username is: %DOCKER_USERNAME%
 
-                        echo %DOCKER_PASSWORD% | "C:\\Users\\Hp\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" login -u %DOCKER_USERNAME% --password-stdin
-                    '''
-                }
+        echo %DOCKER_PASSWORD% | "C:\\Users\\Hp\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" login -u %DOCKER_USERNAME% --password-stdin
+    '''
+}
             }
         }
 
