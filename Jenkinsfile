@@ -1,4 +1,5 @@
 pipeline {
+
     agent any
 
     tools {
@@ -19,26 +20,26 @@ pipeline {
             }
         }
 
-      stage('Docker Push') {
-    steps {
-        withCredentials([
-            string(
-                credentialsId: 'dockerhub-pat',
-                variable: 'DOCKER_PASSWORD'
-            )
-        ]) {
-            bat '''
-                echo %DOCKER_PASSWORD% | "C:\\Users\\Hp\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" login -u tirumalashankar --password-stdin
-            '''
+        stage('Docker Push') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-credentials',
+                    usernameVariable: 'DOCKER_USERNAME',
+                    passwordVariable: 'DOCKER_PASSWORD'
+                )]) {
+
+                    bat '''
+                    "C:\\Users\\Hp\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" login -u %DOCKER_USERNAME% -p %DOCKER_PASSWORD%
+                    "C:\\Users\\Hp\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" tag springboot-1:latest tirumalashankar/spring-boot-docker-app:latest
+                    "C:\\Users\\Hp\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" push tirumalashankar/spring-boot-docker-app:latest
+                    '''
+                }
+            }
         }
-    }
-}
 
         stage('Docker Run') {
             steps {
-
                 bat '"C:\\Users\\Hp\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" rm -f springboot-container || exit /b 0'
-
                 bat '"C:\\Users\\Hp\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" run -d --name springboot-container -p 8081:8081 springboot-1:latest'
             }
         }
